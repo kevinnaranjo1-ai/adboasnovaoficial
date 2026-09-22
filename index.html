@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- iOS / Apple Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Boas Novas" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    
+    <!-- Theme colors for browser frames -->
+    <meta name="theme-color" content="#1a365d" />
+    <meta name="msapplication-Navbutton-Color" content="#1a365d" />
+    
+    <title>AD Boas Novas - Tenda da Promessa</title>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        const registerPWA = function() {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(function(registration) {
+              console.log('[PWA] Service Worker registrado:', registration.scope);
+              registration.update();
+            })
+            .catch(function(error) {
+              console.warn('[PWA] Falha ao registrar Service Worker:', error);
+            });
+        };
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+          registerPWA();
+        } else {
+          window.addEventListener('DOMContentLoaded', registerPWA);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
