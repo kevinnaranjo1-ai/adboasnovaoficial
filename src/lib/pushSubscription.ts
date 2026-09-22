@@ -329,7 +329,7 @@ export async function sendPushNotificationToMembers(payload: SendPushPayload): P
     }
 
     // 3. Envia para a rota backend Express que dispara WebPush com VAPID
-    const response = await fetch('/api/push/send', {
+    const response = await fetch('https://adboasnovaoficial.onrender.com/api/push/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
