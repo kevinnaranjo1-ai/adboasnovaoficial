@@ -139,17 +139,43 @@
     },
     "Asset": {
       "title": "Church Asset",
-      "description": "Church inventory items like chairs, tables, instruments",
+      "description": "Church inventory items like chairs, tables, microphones, instruments, cables, air conditioning and projectors",
       "type": "object",
       "properties": {
         "id": { "type": "string" },
         "name": { "type": "string" },
+        "category": { "type": "string", "enum": ["Microfones", "Cabos & Conectores", "Instrumentos Musicais", "Som & Áudio", "Projetores & Telões", "Ar Condicionado & Ventilação", "Iluminação", "Mobiliário", "Outros"] },
         "quantity": { "type": "number" },
         "condition": { "type": "string", "enum": ["Novo", "Bom", "Regular", "Precisa de Manutenção", "Danificado"] },
+        "status": { "type": "string", "enum": ["Em uso", "Em manutenção", "Reparado", "Reserva / Almoxarifado", "Baixado"] },
         "location": { "type": "string" },
+        "serialNumber": { "type": "string" },
+        "notes": { "type": "string" },
         "lastInventoryDate": { "type": "string", "format": "date" }
       },
       "required": ["name", "quantity"]
+    },
+    "CleaningSchedule": {
+      "title": "Cleaning and Temple Care Schedule",
+      "description": "Cleaning groups and maintenance tasks before and after services",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "time": { "type": "string" },
+        "targetService": { "type": "string" },
+        "leaderName": { "type": "string" },
+        "leaderPhone": { "type": "string" },
+        "teamMembers": { "type": "array", "items": { "type": "string" } },
+        "areas": { "type": "array", "items": { "type": "string" } },
+        "checklist": { "type": "array" },
+        "status": { "type": "string", "enum": ["Agendada", "Em andamento", "Concluída", "Cancelada"] },
+        "observations": { "type": "string" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "date", "leaderName"]
     },
     "Worker": {
       "title": "Church Worker/Leader",
@@ -457,9 +483,111 @@
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["title", "ministry", "date", "createdById"]
+    },
+    "LibraryBook": {
+      "title": "Livro da Biblioteca da Igreja",
+      "description": "Catálogo de livros cristãos, teologia e comentários bíblicos da igreja",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "category": { "type": "string", "enum": ["Teologia & Doutrina", "Comentários Bíblicos", "Vida Cristã & Discipulado", "Família & Casamento", "Jovens & Adolescentes", "Infantil", "Liderança & Ministério", "Devocionais & Oração", "História da Igreja", "Outros"] },
+        "isbn": { "type": "string" },
+        "publisher": { "type": "string" },
+        "edition": { "type": "string" },
+        "totalCopies": { "type": "number" },
+        "availableCopies": { "type": "number" },
+        "locationShelf": { "type": "string" },
+        "coverUrl": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["Disponível", "Emprestado", "Em Manutenção / Danificado", "Extraviado"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "author", "category"]
+    },
+    "BookLoan": {
+      "title": "Registro de Empréstimo de Livro",
+      "description": "Controle de empréstimo e devolução de livros da biblioteca",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "bookId": { "type": "string" },
+        "bookTitle": { "type": "string" },
+        "bookAuthor": { "type": "string" },
+        "memberId": { "type": "string" },
+        "memberName": { "type": "string" },
+        "memberPhone": { "type": "string" },
+        "loanDate": { "type": "string", "format": "date" },
+        "expectedReturnDate": { "type": "string", "format": "date" },
+        "actualReturnDate": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["Ativo", "Devolvido", "Atrasado", "Renovado"] },
+        "notes": { "type": "string" },
+        "registeredById": { "type": "string" },
+        "registeredByName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["bookId", "bookTitle", "memberName", "loanDate", "expectedReturnDate", "status"]
+    },
+    "SocialAssistanceRecord": {
+      "title": "Registro de Ação Social e Diaconia",
+      "description": "Registro reservado de famílias assistidas com cestas básicas, alimentos ou roupas",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "beneficiaryName": { "type": "string" },
+        "familyMembersCount": { "type": "number" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "assistanceType": { "type": "string", "enum": ["Cesta Básica Completa", "Cesta de Alimentos Emergencial", "Kit de Higiene & Limpeza", "Roupas & Agasalhos", "Fraldas & Itens de Bebê", "Móveis / Utensílios", "Outra Ajuda"] },
+        "quantity": { "type": "number" },
+        "deliveryDate": { "type": "string", "format": "date" },
+        "deliveredById": { "type": "string" },
+        "deliveredByName": { "type": "string" },
+        "situationNotes": { "type": "string" },
+        "status": { "type": "string", "enum": ["Entregue", "Agendada", "Em Acompanhamento"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["beneficiaryName", "assistanceType", "deliveryDate", "status"]
+    },
+    "SolidaryItem": {
+      "title": "Item do Varal da Fé / Banco Solidário",
+      "description": "Ponto de encontro comunitário para doação ou pedido de roupas, berços, móveis e calçados entre os irmãos",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["Quero Doar", "Estou Precisando"] },
+        "title": { "type": "string" },
+        "category": { "type": "string", "enum": ["Roupas Infantis / Bebê", "Roupas Adulto", "Cochinhos & Carrinhos de Bebê", "Móveis & Eletrodomésticos", "Calçados", "Brinquedos", "Material Escolar", "Outros"] },
+        "description": { "type": "string" },
+        "itemCondition": { "type": "string", "enum": ["Novo / Excelente", "Bom Estado", "Usado", "Necessita Reparo Simples"] },
+        "contactName": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "contactUserId": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["Disponível / Aberto", "Concluído / Atendido", "Cancelado"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["type", "title", "category", "contactName", "contactPhone", "status"]
     }
   },
   "firestore": {
+    "/library_books/{bookId}": {
+      "schema": "LibraryBook",
+      "description": "Catálogo de livros e comentários bíblicos da igreja"
+    },
+    "/book_loans/{loanId}": {
+      "schema": "BookLoan",
+      "description": "Controle de empréstimos de livros com prazo de devolução"
+    },
+    "/social_assistance/{recordId}": {
+      "schema": "SocialAssistanceRecord",
+      "description": "Registro reservado de diaconia e entrega de cestas básicas"
+    },
+    "/solidary_items/{itemId}": {
+      "schema": "SolidaryItem",
+      "description": "Varal da Fé e banco solidário de doações entre irmãos"
+    },
     "/schedules/{scheduleId}": {
       "schema": "ServingSchedule",
       "description": "Escalas de voluntários e obreiros por culto"
@@ -503,6 +631,10 @@
     "/assets/{assetId}": {
       "schema": "Asset",
       "description": "Church inventory and furniture"
+    },
+    "/cleaning_schedules/{scheduleId}": {
+      "schema": "CleaningSchedule",
+      "description": "Temple cleaning schedules, groups and tasks"
     },
     "/workers/{workerId}": {
       "schema": "Worker",

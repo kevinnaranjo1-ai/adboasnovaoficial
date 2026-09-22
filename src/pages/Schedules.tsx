@@ -412,7 +412,7 @@ export default function SchedulesPage({ role }: SchedulesPageProps) {
 
   // Pre-fill Template Slots in Form
   const handleApplyTemplate = () => {
-    const template = DEFAULT_TEMPLATES[formMinistry];
+    const template = DEFAULT_TEMPLATES[formMinistry] || DEFAULT_TEMPLATES['Louvor'];
     if (template) {
       setFormSlots(template.map((t, idx) => ({
         id: String(idx + 1),
@@ -420,6 +420,44 @@ export default function SchedulesPage({ role }: SchedulesPageProps) {
         assignedMemberId: '',
         assignedMemberName: ''
       })));
+    }
+  };
+
+  const handleMinistryChange = (newMinistry: string) => {
+    setFormMinistry(newMinistry);
+    // Suggest relevant service type
+    if (newMinistry.includes('Jovens')) {
+      setFormServiceType('Culto de Departamento de Jovens');
+      if (!formTitle || formTitle.startsWith('Escala')) {
+        setFormTitle('Escala - Culto de Departamento de Jovens');
+      }
+    } else if (newMinistry.includes('Círculo de Oração')) {
+      setFormServiceType('Reunião Círculo de Oração (Terça-feira)');
+      if (!formTitle || formTitle.startsWith('Escala')) {
+        setFormTitle('Escala - Círculo de Oração');
+      }
+    } else if (newMinistry.includes('Famílias')) {
+      setFormServiceType('Culto de Departamento de Famílias');
+      if (!formTitle || formTitle.startsWith('Escala')) {
+        setFormTitle('Escala - Culto de Famílias');
+      }
+    } else if (newMinistry.includes('Missões')) {
+      setFormServiceType('Culto de Departamento de Missões');
+      if (!formTitle || formTitle.startsWith('Escala')) {
+        setFormTitle('Escala - Culto de Missões');
+      }
+    } else if (newMinistry === 'EBD') {
+      setFormServiceType('Escola Bíblica Dominical - EBD (Domingo Manhã)');
+      if (!formTitle || formTitle.startsWith('Escala')) {
+        setFormTitle('Escala - Escola Dominical');
+      }
+    }
+  };
+
+  const handleServiceTypeChange = (newService: string) => {
+    setFormServiceType(newService);
+    if (!formTitle || formTitle.startsWith('Escala')) {
+      setFormTitle(`Escala - ${newService}`);
     }
   };
 
@@ -503,7 +541,7 @@ export default function SchedulesPage({ role }: SchedulesPageProps) {
       text += `• *${slot.roleName}:* ${slot.assignedMemberName} ${statusSymbol}\n`;
     });
 
-    text += `\n📲 *Acesse o App da Igreja para confirmar ou ver sua escala:* ${window.location.origin}/admin/agenda`;
+    text += `\n📲 *Acesse o App da Igreja para confirmar ou ver sua escala:* ${window.location.origin}/admin/escalas`;
 
     const encoded = encodeURIComponent(text);
     window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
@@ -1015,7 +1053,7 @@ export default function SchedulesPage({ role }: SchedulesPageProps) {
                     </label>
                     <select
                       value={formMinistry}
-                      onChange={(e) => setFormMinistry(e.target.value)}
+                      onChange={(e) => handleMinistryChange(e.target.value)}
                       className="w-full rounded-2xl border border-church-navy/20 p-2.5 text-xs focus:border-church-gold focus:outline-none focus:ring-1 focus:ring-church-gold font-bold bg-white"
                     >
                       {MINISTRIES.filter(m => m.id !== 'todos').map(m => (
@@ -1030,14 +1068,12 @@ export default function SchedulesPage({ role }: SchedulesPageProps) {
                     </label>
                     <select
                       value={formServiceType}
-                      onChange={(e) => setFormServiceType(e.target.value)}
+                      onChange={(e) => handleServiceTypeChange(e.target.value)}
                       className="w-full rounded-2xl border border-church-navy/20 p-2.5 text-xs focus:border-church-gold focus:outline-none focus:ring-1 focus:ring-church-gold font-bold bg-white"
                     >
-                      <option value="Culto de Domingo">Culto de Celebração - Domingo</option>
-                      <option value="Culto de Ensino">Culto de Ensino - Quarta</option>
-                      <option value="Culto de Jovens">Culto de Jovens - Sábado</option>
-                      <option value="Escola Dominical">Escola Dominical (EBD)</option>
-                      <option value="Culto Especial">Culto / Congresso Especial</option>
+                      {SERVICE_TYPES.map((serviceName) => (
+                        <option key={serviceName} value={serviceName}>{serviceName}</option>
+                      ))}
                     </select>
                   </div>
                 </div>

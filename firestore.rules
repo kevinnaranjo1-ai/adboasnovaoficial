@@ -137,7 +137,12 @@ service cloud.firestore {
     }
     match /assets/{id} {
       allow read: if isSignedIn();
-      allow create, update, delete: if isPastorAdmin();
+      allow create, update, delete: if isAdmin() || isPastorAdmin();
+    }
+    match /cleaning_schedules/{id} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isAdmin() || isPastorAdmin();
     }
     match /workers/{id} {
       allow read: if isSignedIn();
@@ -287,6 +292,33 @@ service cloud.firestore {
     match /quiz_leaderboard/{userId} {
       allow read: if isSignedIn();
       allow create, update, delete: if isSignedIn();
+    }
+
+    // --- Biblioteca da Igreja & Empréstimo de Livros ---
+    match /library_books/{bookId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isAdmin() || isPastorAdmin();
+    }
+
+    match /book_loans/{loanId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isAdmin() || isPastorAdmin();
+    }
+
+    // --- Ação Social & Cesta Básica (Diaconia) - Registro Reservado ---
+    match /social_assistance/{recordId} {
+      allow read, create, update, delete: if isAdmin() || isPastorAdmin();
+    }
+
+    // --- Banco Solidário / Varal da Fé (Comunitário) ---
+    match /solidary_items/{itemId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && (
+        resource.data.contactUserId == request.auth.uid || 
+        isAdmin() || 
+        isPastorAdmin()
+      );
     }
   }
 }

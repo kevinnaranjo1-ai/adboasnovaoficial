@@ -32,6 +32,9 @@ import VisitorManagement from './pages/admin/VisitorManagement';
 import ChildPresentationManagement from './pages/admin/ChildPresentationManagement';
 import ServiceVisitsManagement from './pages/admin/ServiceVisitsManagement';
 import SchedulesPage from './pages/Schedules';
+import MaintenanceManagement from './pages/admin/MaintenanceManagement';
+import ChurchLibrary from './pages/ChurchLibrary';
+import SocialActionPage from './pages/SocialActionPage';
 import { Loader2, MessageCircle } from 'lucide-react';
 import { requestNotificationPermission, createNewMemberNotification, checkAndSendBirthdayNotifications } from './lib/notifications';
 import { MiniPlayerProvider } from './context/MiniPlayerContext';
@@ -281,6 +284,34 @@ export default function App() {
               <Route 
                 path="/admin/avisos" 
                 element={showSidebar ? <AnnouncementSettings /> : <Navigate to="/" />} 
+              />
+              <Route 
+                path="/admin/manutencao" 
+                element={user ? <MaintenanceManagement role={userRole} /> : <Navigate to="/login" />} 
+              />
+              <Route 
+                path="/manutencao" 
+                element={user ? <MaintenanceManagement role={userRole} /> : <Navigate to="/login" />} 
+              />
+              <Route 
+                path="/biblioteca" 
+                element={user ? <ChurchLibrary role={userRole} /> : <Navigate to="/login" />} 
+              />
+              <Route 
+                path="/admin/biblioteca" 
+                element={user ? <ChurchLibrary role={userRole} /> : <Navigate to="/login" />} 
+              />
+              <Route 
+                path="/acao-social" 
+                element={user ? <SocialActionPage role={userRole} /> : <Navigate to="/login" />} 
+              />
+              <Route 
+                path="/varal-da-fe" 
+                element={user ? <SocialActionPage role={userRole} /> : <Navigate to="/login" />} 
+              />
+              <Route 
+                path="/admin/acao-social" 
+                element={user ? <SocialActionPage role={userRole} /> : <Navigate to="/login" />} 
               />
               {/* Fallbacks para seções não implementadas ainda */}
               <Route path="/admin/espiritual" element={isPastorAdmin ? <AdminView role={userRole} /> : <Navigate to="/" />} />

@@ -3,7 +3,7 @@ import { collection, query, where, orderBy, limit } from 'firebase/firestore';
 import { db, auth } from '../lib/firebase';
 import { format, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { FileText, Clock, CheckCircle2, ChevronRight, AlertCircle, Plus, Eye, IdCard, Users, Cake, Gift, MessageCircle, Camera, Calendar, MapPin, Sparkles, Mic, User, Store, BookOpen, Music, ClipboardList, Brain } from 'lucide-react';
+import { FileText, Clock, CheckCircle2, ChevronRight, AlertCircle, Plus, Eye, IdCard, Users, Cake, Gift, MessageCircle, Camera, Calendar, MapPin, Sparkles, Mic, User, Store, BookOpen, Music, ClipboardList, Brain, Wrench, Library, HeartHandshake } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useState, useMemo } from 'react';
@@ -437,7 +437,7 @@ export default function Dashboard({ role }: DashboardProps) {
 
             <Link
               to="/estudos"
-              className="group flex items-center gap-2 sm:gap-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-church-gold/40 p-2.5 sm:p-3 text-left transition-all active:scale-95 cursor-pointer backdrop-blur-sm min-w-0 col-span-2 sm:col-span-1"
+              className="group flex items-center gap-2 sm:gap-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-church-gold/40 p-2.5 sm:p-3 text-left transition-all active:scale-95 cursor-pointer backdrop-blur-sm min-w-0"
             >
               <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-church-gold/20 text-church-gold group-hover:bg-church-gold group-hover:text-church-navy transition-colors">
                 <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -448,6 +448,57 @@ export default function Dashboard({ role }: DashboardProps) {
                 </span>
                 <span className="block text-[9.5px] sm:text-[10px] text-white/60 font-medium leading-tight mt-0.5 truncate">
                   Esboços e Lições
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              to="/admin/manutencao"
+              className="group flex items-center gap-2 sm:gap-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-church-gold/40 p-2.5 sm:p-3 text-left transition-all active:scale-95 cursor-pointer backdrop-blur-sm min-w-0"
+            >
+              <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-church-gold/20 text-church-gold group-hover:bg-church-gold group-hover:text-church-navy transition-colors">
+                <Wrench className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="block text-[11px] sm:text-xs font-bold text-white group-hover:text-amber-200 leading-tight">
+                  Zeladoria & Templo
+                </span>
+                <span className="block text-[9.5px] sm:text-[10px] text-white/60 font-medium leading-tight mt-0.5 truncate">
+                  Limpeza & Patrimônio
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              to="/biblioteca"
+              className="group flex items-center gap-2 sm:gap-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-church-gold/40 p-2.5 sm:p-3 text-left transition-all active:scale-95 cursor-pointer backdrop-blur-sm min-w-0"
+            >
+              <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-church-gold/20 text-church-gold group-hover:bg-church-gold group-hover:text-church-navy transition-colors">
+                <Library className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="block text-[11px] sm:text-xs font-bold text-white group-hover:text-amber-200 leading-tight">
+                  Biblioteca Cristã
+                </span>
+                <span className="block text-[9.5px] sm:text-[10px] text-white/60 font-medium leading-tight mt-0.5 truncate">
+                  Livros & Empréstimos
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              to="/acao-social"
+              className="group flex items-center gap-2 sm:gap-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-church-gold/40 p-2.5 sm:p-3 text-left transition-all active:scale-95 cursor-pointer backdrop-blur-sm min-w-0 col-span-2 sm:col-span-1"
+            >
+              <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-rose-500/20 text-rose-300 group-hover:bg-rose-500 group-hover:text-white transition-colors">
+                <HeartHandshake className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="block text-[11px] sm:text-xs font-bold text-white group-hover:text-rose-200 leading-tight">
+                  Banco Solidário
+                </span>
+                <span className="block text-[9.5px] sm:text-[10px] text-white/60 font-medium leading-tight mt-0.5 truncate">
+                  Varal da Fé & Cestas
                 </span>
               </div>
             </Link>
