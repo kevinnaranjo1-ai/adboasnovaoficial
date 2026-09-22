@@ -396,7 +396,7 @@ export async function sendTestPushToSelf(
     const p256dh = btoa(String.fromCharCode.apply(null, Array.from(new Uint8Array(rawP256dh))));
     const auth = btoa(String.fromCharCode.apply(null, Array.from(new Uint8Array(rawAuth))));
 
-    const res = await fetch('/api/push/test', {
+    const res = await fetch('https://adboasnovaoficial.onrender.com/api/push/test', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
