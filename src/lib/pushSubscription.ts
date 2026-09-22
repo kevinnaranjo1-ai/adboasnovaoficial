@@ -14,6 +14,18 @@ import {
 const DEFAULT_VAPID_PUBLIC_KEY = 
   'BECPa8laam2Gd7V0BCBuSLS1llLKl5BdFuV5VftiQMQ8bBroU3yior4pFOdXdku5mpv6uG44oqqkt6DOzwAkx18';
 
+// Permite usar o backend em execução atual ou o servidor no Render com fallback
+export function getPushServerBaseUrl(): string {
+  // Se estivermos rodando no mesmo servidor Express (porta 3000 ou produção unificada), usa rota relativa
+  if (typeof window !== 'undefined') {
+    // Se a aplicação estiver hospedada no mesmo domínio do servidor Express com /api/health
+    if (window.location.hostname.includes('adboasnovaoficial.onrender.com') || window.location.port === '3000') {
+      return '';
+    }
+  }
+  return 'https://adboasnovaoficial.onrender.com';
+}
+
 /**
  * Converte chave pública VAPID base64url para Uint8Array
  */
@@ -329,7 +341,8 @@ export async function sendPushNotificationToMembers(payload: SendPushPayload): P
     }
 
     // 3. Envia para a rota backend Express que dispara WebPush com VAPID
-    const response = await fetch('https://adboasnovaoficial.onrender.com/api/push/send', {
+    const baseUrl = getPushServerBaseUrl();
+    const response = await fetch(`${baseUrl}/api/push/send`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -396,7 +409,8 @@ export async function sendTestPushToSelf(
     const p256dh = btoa(String.fromCharCode.apply(null, Array.from(new Uint8Array(rawP256dh))));
     const auth = btoa(String.fromCharCode.apply(null, Array.from(new Uint8Array(rawAuth))));
 
-    const res = await fetch('https://adboasnovaoficial.onrender.com/api/push/test', {
+    const baseUrl = getPushServerBaseUrl();
+    const res = await fetch(`${baseUrl}/api/push/test`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
