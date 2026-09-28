@@ -1,5 +1,10 @@
 {
   "appId": "br.com.adboasnovas",
   "appName": "AD BOAS NOVAS",
-  "webDir": "dist"
+  "webDir": "dist",
+  "plugins": {
+    "FirebaseAuthentication": {
+      "providers": ["google.com"]
+    }
+  }
 }
